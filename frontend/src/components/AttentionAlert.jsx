@@ -11,6 +11,7 @@ const AttentionAlert = () => {
   // We only want to show the alert if we're not on Rinkeby testnet
   // TODO: switch to Goerli testnet
   const isCorrectTestnet = chainId === "0x4";
+  const testnedUsed = "Rinkeby";
 
   const switchToCorrectTestnet = () => {
     switchChain("0x4");
@@ -42,7 +43,7 @@ const AttentionAlert = () => {
           </h3>
           <div className="text-sm text-blue-700 mt-2">
             Be sure to have your MetaMask extension installed and connected to
-            the <span className="font-semibold">Rinkeby network.</span>
+            the <span className="font-semibold">{testnedUsed} network.</span>
           </div>
 
           {!isCorrectTestnet && (
@@ -51,7 +52,7 @@ const AttentionAlert = () => {
                 class="text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
                 onClick={switchToCorrectTestnet}
               >
-                Switch to Rinkeby Network
+                Switch to {testnedUsed} Network
               </button>
             </p>
           )}
