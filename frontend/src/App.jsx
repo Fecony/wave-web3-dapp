@@ -2,27 +2,17 @@ const App = () => {
   return (
     <div class="container mx-auto">
       <div class="relative rounded-xl overflow-auto p-8">
-        <div class="grid grid-cols-3 gap-4 font-mono text-white text-sm text-center font-bold">
-          <div class="p-4 rounded-lg bg-indigo-300 dark:bg-indigo-800 dark:text-indigo-400">
-            01
-          </div>
-          <div class="p-4 rounded-lg bg-indigo-300 dark:bg-indigo-800 dark:text-indigo-400">
-            02
-          </div>
-          <div class="p-4 rounded-lg bg-indigo-300 dark:bg-indigo-800 dark:text-indigo-400">
-            03
-          </div>
-          <div class="p-4 rounded-lg shadow-lg bg-indigo-500 col-span-2">
-            04
-          </div>
-          <div class="p-4 rounded-lg bg-indigo-300 dark:bg-indigo-800 dark:text-indigo-400">
-            05
-          </div>
-          <div class="p-4 rounded-lg bg-indigo-300 dark:bg-indigo-800 dark:text-indigo-400">
-            06
-          </div>
-          <div class="p-4 rounded-lg shadow-lg bg-indigo-500 col-span-2">
-            07
+        <div class="min-h-[15rem] flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]">
+          <div class="flex flex-auto flex-col justify-center items-center p-4 md:p-5">
+            <div class="flex justify-center">
+              <div
+                class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-blue-600 rounded-full"
+                role="status"
+                aria-label="loading"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
