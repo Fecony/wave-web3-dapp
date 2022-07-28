@@ -1,9 +1,9 @@
-import { useMetaMask } from "metamask-react";
+// import { useMetaMask } from "metamask-react";
 import { Formik, Field, Form } from "formik";
-import Loading from "./Loading";
+import Loading from "./Loading.jsx";
 
 const SendWave = () => {
-  const { chainId } = useMetaMask();
+  // const { chainId } = useMetaMask();
   const isCorrectTestnet = chainId === "0x4";
 
   return (

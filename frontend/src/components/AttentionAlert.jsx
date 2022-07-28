@@ -1,17 +1,19 @@
-import { useMetaMask } from "metamask-react";
 import { toast } from "react-hot-toast";
+import { useNetwork, useSwitchNetwork } from "wagmi";
+import { rinkeby } from "wagmi/chains";
 
 const AttentionAlert = () => {
-  const { status, chainId, switchChain } = useMetaMask();
+  const { chain } = useNetwork();
+  const { switchNetworkAsync } = useSwitchNetwork();
 
   // We only want to show the alert if we're not on Rinkeby testnet
   // TODO: switch to Goerli testnet
-  const isCorrectTestnet = chainId === "0x4";
-  const isMetaMaskAvailable = status !== "unavailable";
+  const isCorrectTestnet = chain?.network === rinkeby.network;
+  const isMetaMaskAvailable = chain?.network !== undefined;
 
-  // eslint-disable-next-line no-undef
   if (
     isMetaMaskAvailable &&
+    // eslint-disable-next-line no-undef
     localStorage.getItem("dismissed") === "true" &&
     isCorrectTestnet
   ) {
@@ -23,7 +25,7 @@ const AttentionAlert = () => {
   const switchToCorrectTestnet = () => {
     const toastId = toast.loading("Switching to Rinkeby testnet...");
 
-    switchChain("0x4")
+    switchNetworkAsync?.(rinkeby.id)
       .then(() => {
         toast.success("Switched to Rinkeby testnet!", {
           icon: "🎉",

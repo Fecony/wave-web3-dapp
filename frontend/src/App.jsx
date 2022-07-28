@@ -1,6 +1,3 @@
-import { useMetaMask } from "metamask-react";
-// import WavePortalABI from "./artifacts/contracts/WavePortal.sol/WavePortal.json";
-
 import MetaMaskExtension from "./components/MetamaskExtension.jsx";
 import MetaMaskConnect from "./components/MetamaskConnect.jsx";
 import Github from "./components/Github.jsx";
@@ -13,18 +10,20 @@ import truncateEthAddress from "truncate-eth-address";
 import Danger from "./components/Danger.jsx";
 import SendWave from "./components/SendWave.jsx";
 import Header from "./components/Header.jsx";
+import { useAccount, useConnect } from "wagmi";
+import DisconnectButton from "./components/DisconnectButton.jsx";
+import { rinkeby } from "wagmi/chains";
 
 const App = () => {
-  const { status, account: address, chainId } = useMetaMask();
-  const isCorrectTestnet = chainId === "0x4";
+  const { address, connector, isConnecting, isDisconnected, isReconnecting } =
+    useAccount();
+  const { data } = useConnect();
 
-  // const [totalWaveCount, setTotalWaveCount] = useState(0);
-  // const [totalUserWaveCount, setTotalUserWaveCount] = useState(0);
-  // const [allWaves, setAllWaves] = useState([]);
+  // const isCorrectTestnet = data?.chain?.network === rinkeby.network;
 
-  console.log(status);
+  // console.log(isCorrectTestnet, data, data?.chain?.id, rinkeby?.id);
+
   const contractAddress = "0x5f201a69d75dab49352a265562859f0bedd0ce98";
-  // const contractABI = WavePortalABI.abi;
 
   // TODO: Sections
   // Header & Bio ? ✅
@@ -47,6 +46,7 @@ const App = () => {
     if (address) {
       toast.success("Hey! You are connected", {
         icon: "👋",
+        id: "welcome:message",
       });
     }
   }, [address]);
@@ -58,6 +58,8 @@ const App = () => {
       <Address text="Contract address" address={contractAddress} />
 
       <div className="relative">
+        <DisconnectButton />
+
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
           <div className="p-4 sm:p-7">
             <Header />
@@ -72,25 +74,24 @@ const App = () => {
                     color="text-teal-800"
                   />
 
-                  <SendWave />
+                  {/* <SendWave /> */}
                 </>
               ) : (
                 <>
-                  {status === "unavailable" && <MetaMaskExtension />}
-                  {status === "notConnected" && <MetaMaskConnect />}
-                  {["connecting", "initializing"].includes(status) && (
-                    <Loading />
-                  )}
+                  {/* TODO: find a way to determine those... */}
+                  {!connector && <MetaMaskExtension />}
+                  {isDisconnected && connector && <MetaMaskConnect />}
+                  {isConnecting || (isReconnecting && <Loading />)}
                 </>
               )}
             </div>
           </div>
         </div>
 
-        {!isCorrectTestnet && <Danger />}
+        {/* {!isCorrectTestnet && <Danger />} */}
       </div>
 
-      <div className="columns-2 gap-4 space-y-4">
+      {/* <div className="columns-2 gap-4 space-y-4">
         {[
           {
             address: contractAddress,
@@ -144,7 +145,7 @@ const App = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
 
       <Github />
     </main>
