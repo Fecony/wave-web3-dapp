@@ -1,20 +1,43 @@
 import { useMetaMask } from "metamask-react";
+import { toast } from "react-hot-toast";
 
 const AttentionAlert = () => {
-  // eslint-disable-next-line no-undef
-  if (localStorage.getItem("dismissed") === "true") {
-    return null;
-  }
-
-  const { chainId, switchChain } = useMetaMask();
+  const { status, chainId, switchChain } = useMetaMask();
 
   // We only want to show the alert if we're not on Rinkeby testnet
   // TODO: switch to Goerli testnet
   const isCorrectTestnet = chainId === "0x4";
+  const isMetaMaskAvailable = status !== "unavailable";
+
+  // eslint-disable-next-line no-undef
+  if (
+    isMetaMaskAvailable &&
+    localStorage.getItem("dismissed") === "true" &&
+    isCorrectTestnet
+  ) {
+    return null;
+  }
+
   const testnedUsed = "Rinkeby";
 
   const switchToCorrectTestnet = () => {
-    switchChain("0x4");
+    const toastId = toast.loading("Switching to Rinkeby testnet...");
+
+    switchChain("0x4")
+      .then(() => {
+        toast.success("Switched to Rinkeby testnet!", {
+          icon: "🎉",
+          id: toastId,
+        });
+      })
+      .catch((error) => {
+        toast.error(`Ooops... \nYou didn't switch to ${testnedUsed} network`, {
+          icon: "😱",
+          id: toastId,
+        });
+
+        console.log(error);
+      });
   };
 
   return (
@@ -46,16 +69,14 @@ const AttentionAlert = () => {
             the <span className="font-semibold">{testnedUsed} network.</span>
           </div>
 
-          {!isCorrectTestnet && (
-            <p class="text-sm mt-3">
-              <button
-                class="text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
-                onClick={switchToCorrectTestnet}
-              >
-                Switch to {testnedUsed} Network
-              </button>
-            </p>
-          )}
+          <p className="text-sm mt-3">
+            <button
+              className="text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
+              onClick={switchToCorrectTestnet}
+            >
+              Switch to {testnedUsed} Network
+            </button>
+          </p>
         </div>
 
         <div className="pl-3 ml-auto">

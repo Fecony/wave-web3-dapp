@@ -1,6 +1,6 @@
 const Github = () => {
   return (
-    <p className="mt-3 flex justify-center items-center text-center ">
+    <p className="mt-3 flex justify-center items-center text-center">
       <a
         className="pr-3.5 inline-flex items-center gap-x-2 text-sm text-gray-400 transition-colors duration-300 hover:text-gray-700"
         href="https://github.com/Fecony/wave-web3-dapp/tree/main"

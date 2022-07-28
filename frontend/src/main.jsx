@@ -12,6 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Toaster
         toastOptions={{
           position: "top-right",
+          style: {
+            borderRadius: "4px",
+          },
         }}
       />
       <App />
