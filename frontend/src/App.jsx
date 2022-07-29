@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import truncateEthAddress from "truncate-eth-address";
 import { useAccount, useNetwork } from "wagmi";
 import { rinkeby } from "wagmi/chains";
 import Danger from "./components/Danger.jsx";
 import DisconnectButton from "./components/DisconnectButton.jsx";
-// import SendWave from "./components/SendWave.jsx";
+import SendWave from "./components/SendWave.jsx";
 import Header from "./components/Header.jsx";
 import MetaMaskExtension from "./components/MetaMaskExtension.jsx";
 import ConnectMetaMask from "./components/ConnectMetaMask.jsx";
@@ -13,6 +12,7 @@ import Github from "./components/Github.jsx";
 import AttentionAlert from "./components/AttentionAlert.jsx";
 import Address from "./components/Address.jsx";
 import Loading from "./components/Loading.jsx";
+import WaveList from "./components/WaveList.jsx";
 
 const App = () => {
   const { chain } = useNetwork();
@@ -25,23 +25,6 @@ const App = () => {
     isConnected && isMetaMaskAvailable && !isCorrectNetwork;
 
   const contractAddress = "0x5f201a69d75dab49352a265562859f0bedd0ce98";
-
-  // TODO: Sections
-  // Header & Bio ? ✅
-  // Wave button with text input ✅
-  // Connect wallet ✅
-  // Display all waves
-
-  // TODO: toast messages
-  //  - on login ✅
-  //     - pending ✅
-  //     - fail ✅
-  //     - success ✅
-  //  - on waving
-  //    - pending
-  //    - success
-  //    - fail
-  //  - on win + confetti
 
   useEffect(() => {
     if (address) {
@@ -75,7 +58,7 @@ const App = () => {
                     color="text-teal-800"
                   />
 
-                  {/* <SendWave /> */}
+                  <SendWave />
                 </>
               ) : (
                 <>
@@ -96,8 +79,8 @@ const App = () => {
         {isMetaMaskConnectedToWrongNetwork && <Danger />}
       </div>
 
-      {/* <div className="columns-2 gap-4 space-y-4">
-        {[
+      <WaveList
+        waves={[
           {
             address: contractAddress,
             timestamp: 1597354800,
@@ -109,7 +92,7 @@ const App = () => {
             message: "Hello, world!",
           },
           {
-            address: contractAddress,
+            address: "0x4accb66CeA2a8168A06a89F73ED1a492Ad22b43C",
             timestamp: 1597354800,
             message:
               "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quae velit mollitia dolores quasi itaque nihil, quidem facere obcaecati ipsa omnis quibusdam ad. Minus est vero non, alias voluptatem omnis?",
@@ -130,27 +113,8 @@ const App = () => {
             timestamp: 1597354800,
             message: "Hello, from Latvia",
           },
-        ].map((wave, index) => {
-          return (
-            <div className={`overflow-auto `} key={index}>
-              <div class="w-full rounded-xl flex flex-col bg-white border shadow-sm p-4 md:p-5">
-                <a
-                  href={`https://rinkeby.etherscan.io/address/${wave.address}`}
-                  target="_blank"
-                >
-                  <p class="mt-1 text-xs font-medium  text-gray-500 dark:text-gray-500">
-                    {truncateEthAddress(wave.address)}
-                  </p>
-                </a>
-
-                <p class="mt-2 text-gray-800 dark:text-gray-400">
-                  {wave.message}
-                </p>
-              </div>
-            </div>
-          );
-        })}
-      </div> */}
+        ]}
+      />
 
       <Github />
     </main>
