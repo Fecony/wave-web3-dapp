@@ -1,26 +1,29 @@
 import { toast } from "react-hot-toast";
-import { useNetwork, useSwitchNetwork } from "wagmi";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { rinkeby } from "wagmi/chains";
 
 const AttentionAlert = () => {
   const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork();
+  const { isConnected } = useAccount();
 
   // We only want to show the alert if we're not on Rinkeby testnet
-  // TODO: switch to Goerli testnet
-  const isCorrectTestnet = chain?.network === rinkeby.network;
-  const isMetaMaskAvailable = chain?.network !== undefined;
+  // TODO: switch to Goerli testnet in the future
+  const isCorrectNetwork = chain?.network === rinkeby.network;
+  const isMetaMaskAvailable =
+    typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask;
+  const isMetaMaskConnectedToWrongNetwork =
+    isConnected && isMetaMaskAvailable && !isCorrectNetwork;
 
   if (
-    isMetaMaskAvailable &&
+    isMetaMaskConnectedToWrongNetwork === false ||
     // eslint-disable-next-line no-undef
-    localStorage.getItem("dismissed") === "true" &&
-    isCorrectTestnet
+    localStorage.getItem("dismissed") === "true"
   ) {
     return null;
   }
 
-  const testnedUsed = "Rinkeby";
+  const networkUsed = rinkeby.name;
 
   const switchToCorrectTestnet = () => {
     const toastId = toast.loading("Switching to Rinkeby testnet...");
@@ -33,7 +36,7 @@ const AttentionAlert = () => {
         });
       })
       .catch((error) => {
-        toast.error(`Ooops... \nYou didn't switch to ${testnedUsed} network`, {
+        toast.error(`Ooops... \nYou didn't switch to ${networkUsed} network`, {
           icon: "😱",
           id: toastId,
         });
@@ -68,17 +71,21 @@ const AttentionAlert = () => {
           </h3>
           <div className="text-sm text-blue-700 mt-2">
             Be sure to have your MetaMask extension installed and connected to
-            the <span className="font-semibold">{testnedUsed} network.</span>
+            the <span className="font-semibold">{networkUsed} network.</span>
           </div>
 
-          <p className="text-sm mt-3">
-            <button
-              className="text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
-              onClick={switchToCorrectTestnet}
-            >
-              Switch to {testnedUsed} Network
-            </button>
-          </p>
+          {isMetaMaskConnectedToWrongNetwork && (
+            <>
+              <p className="text-sm mt-3">
+                <button
+                  className="text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
+                  onClick={switchToCorrectTestnet}
+                >
+                  Switch to {networkUsed} Network
+                </button>
+              </p>
+            </>
+          )}
         </div>
 
         <div className="pl-3 ml-auto">

@@ -1,5 +1,5 @@
-import MetaMaskExtension from "./components/MetamaskExtension.jsx";
-import MetaMaskConnect from "./components/MetamaskConnect.jsx";
+import MetaMaskExtension from "./components/MetaMaskExtension.jsx";
+import MetaMaskConnect from "./components/MetaMaskConnect.jsx";
 import Github from "./components/Github.jsx";
 import AttentionAlert from "./components/AttentionAlert.jsx";
 import Address from "./components/Address.jsx";
@@ -79,8 +79,8 @@ const App = () => {
               ) : (
                 <>
                   {/* TODO: find a way to determine those... */}
-                  {!connector && <MetaMaskExtension />}
-                  {isDisconnected && connector && <MetaMaskConnect />}
+                  {/* {!connector && <MetaMaskExtension />} */}
+                  {isDisconnected && <MetaMaskConnect />}
                   {isConnecting || (isReconnecting && <Loading />)}
                 </>
               )}

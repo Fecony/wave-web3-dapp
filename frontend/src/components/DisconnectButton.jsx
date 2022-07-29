@@ -1,8 +1,13 @@
-import { useDisconnect } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { toast } from "react-hot-toast";
 
 const DisconnectButton = () => {
+  const { address } = useAccount();
   const { disconnectAsync } = useDisconnect();
+
+  if (!address) {
+    return null;
+  }
 
   const disconnect = () => {
     disconnectAsync().then(() => {
