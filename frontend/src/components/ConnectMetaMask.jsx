@@ -1,11 +1,11 @@
 import MetamaskLogo from "../assets/metamask_logo.svg";
 import { toast } from "react-hot-toast";
 import { useConnect, chain } from "wagmi";
-import { MetaMaskConnector as MetaMaskConn } from "wagmi/connectors/metamask";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 
-const MetaMaskConnect = () => {
+const ConnectMetaMask = () => {
   const { connectAsync } = useConnect({
-    connector: new MetaMaskConn({
+    connector: new MetaMaskConnector({
       chains: [chain.rinkeby],
     }),
   });
@@ -32,4 +32,4 @@ const MetaMaskConnect = () => {
   );
 };
 
-export default MetaMaskConnect;
+export default ConnectMetaMask;

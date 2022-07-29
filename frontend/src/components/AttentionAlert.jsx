@@ -16,7 +16,7 @@ const AttentionAlert = () => {
     isConnected && isMetaMaskAvailable && !isCorrectNetwork;
 
   if (
-    isMetaMaskConnectedToWrongNetwork === false ||
+    (isMetaMaskAvailable && isConnected && isCorrectNetwork) ||
     // eslint-disable-next-line no-undef
     localStorage.getItem("dismissed") === "true"
   ) {
@@ -25,12 +25,12 @@ const AttentionAlert = () => {
 
   const networkUsed = rinkeby.name;
 
-  const switchToCorrectTestnet = () => {
-    const toastId = toast.loading("Switching to Rinkeby testnet...");
+  const switchToCorrectNetwork = () => {
+    const toastId = toast.loading(`Switching to ${networkUsed} network...`);
 
     switchNetworkAsync?.(rinkeby.id)
       .then(() => {
-        toast.success("Switched to Rinkeby testnet!", {
+        toast.success(`Switched to ${networkUsed} network!`, {
           icon: "🎉",
           id: toastId,
         });
@@ -79,7 +79,7 @@ const AttentionAlert = () => {
               <p className="text-sm mt-3">
                 <button
                   className="text-gray-500 hover:text-gray-700 font-medium whitespace-nowrap"
-                  onClick={switchToCorrectTestnet}
+                  onClick={switchToCorrectNetwork}
                 >
                   Switch to {networkUsed} Network
                 </button>

@@ -12,7 +12,7 @@ const DisconnectButton = () => {
   const disconnect = () => {
     disconnectAsync().then(() => {
       toast.success("See ya!", {
-        icon: "👋",
+        icon: "🙋",
       });
     });
   };

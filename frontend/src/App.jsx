@@ -1,27 +1,28 @@
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
+import truncateEthAddress from "truncate-eth-address";
+import { useAccount, useNetwork } from "wagmi";
+import { rinkeby } from "wagmi/chains";
+import Danger from "./components/Danger.jsx";
+import DisconnectButton from "./components/DisconnectButton.jsx";
+// import SendWave from "./components/SendWave.jsx";
+import Header from "./components/Header.jsx";
 import MetaMaskExtension from "./components/MetaMaskExtension.jsx";
-import MetaMaskConnect from "./components/MetaMaskConnect.jsx";
+import ConnectMetaMask from "./components/ConnectMetaMask.jsx";
 import Github from "./components/Github.jsx";
 import AttentionAlert from "./components/AttentionAlert.jsx";
 import Address from "./components/Address.jsx";
 import Loading from "./components/Loading.jsx";
-import { useEffect } from "react";
-import { toast } from "react-hot-toast";
-import truncateEthAddress from "truncate-eth-address";
-import Danger from "./components/Danger.jsx";
-import SendWave from "./components/SendWave.jsx";
-import Header from "./components/Header.jsx";
-import { useAccount, useConnect } from "wagmi";
-import DisconnectButton from "./components/DisconnectButton.jsx";
-import { rinkeby } from "wagmi/chains";
 
 const App = () => {
-  const { address, connector, isConnecting, isDisconnected, isReconnecting } =
-    useAccount();
-  const { data } = useConnect();
+  const { chain } = useNetwork();
+  const { address, isConnected, isDisconnected, status } = useAccount();
 
-  // const isCorrectTestnet = data?.chain?.network === rinkeby.network;
-
-  // console.log(isCorrectTestnet, data, data?.chain?.id, rinkeby?.id);
+  const isCorrectNetwork = chain?.network === rinkeby.network;
+  const isMetaMaskAvailable =
+    typeof window.ethereum !== "undefined" && window.ethereum.isMetaMask;
+  const isMetaMaskConnectedToWrongNetwork =
+    isConnected && isMetaMaskAvailable && !isCorrectNetwork;
 
   const contractAddress = "0x5f201a69d75dab49352a265562859f0bedd0ce98";
 
@@ -78,17 +79,21 @@ const App = () => {
                 </>
               ) : (
                 <>
-                  {/* TODO: find a way to determine those... */}
-                  {/* {!connector && <MetaMaskExtension />} */}
-                  {isDisconnected && <MetaMaskConnect />}
-                  {isConnecting || (isReconnecting && <Loading />)}
+                  {["connecting", "reconnecting"].includes(status) ? (
+                    <Loading />
+                  ) : (
+                    <>
+                      {!isMetaMaskAvailable && <MetaMaskExtension />}
+                      {isDisconnected && <ConnectMetaMask />}
+                    </>
+                  )}
                 </>
               )}
             </div>
           </div>
         </div>
 
-        {/* {!isCorrectTestnet && <Danger />} */}
+        {isMetaMaskConnectedToWrongNetwork && <Danger />}
       </div>
 
       {/* <div className="columns-2 gap-4 space-y-4">
