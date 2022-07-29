@@ -45,34 +45,32 @@ const App = () => {
         <DisconnectButton />
 
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-4 sm:p-7">
+          <div className="p-4 sm:p-7 space-y-5">
             <Header />
 
-            <div className="mt-5 space-y-5">
-              {address ? (
-                <>
-                  <Address
-                    text="Your address"
-                    address={address}
-                    bgColor="bg-teal-100"
-                    color="text-teal-800"
-                  />
+            {address ? (
+              <>
+                <Address
+                  text="Your address"
+                  address={address}
+                  bgColor="bg-teal-100"
+                  color="text-teal-800"
+                />
 
-                  <SendWave />
-                </>
-              ) : (
-                <>
-                  {["connecting", "reconnecting"].includes(status) ? (
-                    <Loading />
-                  ) : (
-                    <>
-                      {!isMetaMaskAvailable && <MetaMaskExtension />}
-                      {isDisconnected && <ConnectMetaMask />}
-                    </>
-                  )}
-                </>
-              )}
-            </div>
+                <SendWave />
+              </>
+            ) : (
+              <>
+                {["connecting", "reconnecting"].includes(status) ? (
+                  <Loading />
+                ) : (
+                  <>
+                    {!isMetaMaskAvailable && <MetaMaskExtension />}
+                    {isDisconnected && <ConnectMetaMask />}
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
 
