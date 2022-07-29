@@ -35,6 +35,55 @@ const App = () => {
     }
   }, [address]);
 
+  const waves = [
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: "0x4accb66CeA2a8168A06a89F73ED1a492Ad22b43C",
+      timestamp: 1597354800,
+      message:
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quae velit mollitia dolores quasi itaque nihil, quidem facere obcaecati ipsa omnis quibusdam ad. Minus est vero non, alias voluptatem omnis?",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, world!",
+    },
+    {
+      address: contractAddress,
+      timestamp: 1597354800,
+      message: "Hello, from Latvia",
+    },
+  ];
+
   return (
     <main id="content" role="main" className="space-y-5">
       <AttentionAlert />
@@ -44,7 +93,7 @@ const App = () => {
       <div className="relative">
         <DisconnectButton />
 
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div className="bg-white border border-gray-200 rounded-md shadow-sm dark:bg-gray-800 dark:border-gray-700">
           <div className="p-4 sm:p-7 space-y-5">
             <Header />
 
@@ -77,42 +126,7 @@ const App = () => {
         {isMetaMaskConnectedToWrongNetwork && <Danger />}
       </div>
 
-      <WaveList
-        waves={[
-          {
-            address: contractAddress,
-            timestamp: 1597354800,
-            message: "Hello, world!",
-          },
-          {
-            address: contractAddress,
-            timestamp: 1597354800,
-            message: "Hello, world!",
-          },
-          {
-            address: "0x4accb66CeA2a8168A06a89F73ED1a492Ad22b43C",
-            timestamp: 1597354800,
-            message:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quae velit mollitia dolores quasi itaque nihil, quidem facere obcaecati ipsa omnis quibusdam ad. Minus est vero non, alias voluptatem omnis?",
-          },
-          {
-            address: contractAddress,
-            timestamp: 1597354800,
-            message:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quae velit mollitia dolores quasi itaque nihil, quidem facere obcaecati ipsa omnis quibusdam ad. Minus est vero non, alias voluptatem omnis?",
-          },
-          {
-            address: contractAddress,
-            timestamp: 1597354800,
-            message: "Hello, world!",
-          },
-          {
-            address: contractAddress,
-            timestamp: 1597354800,
-            message: "Hello, from Latvia",
-          },
-        ]}
-      />
+      <WaveList waves={waves} />
 
       <Github />
     </main>
