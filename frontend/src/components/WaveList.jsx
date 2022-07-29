@@ -5,7 +5,7 @@ const WaveList = ({ waves }) => {
     <WaveItem wave={wave} key={index} />
   ));
 
-  return <div className="space-y-4">{waveList}</div>;
+  return <div className="md:columns-2 gap-4">{waveList}</div>;
 };
 
 export default WaveList;

@@ -123,12 +123,12 @@ const App = () => {
           </div>
         </div>
 
+        <Github />
+
         {isMetaMaskConnectedToWrongNetwork && <Danger />}
       </div>
 
       <WaveList waves={waves} />
-
-      <Github />
     </main>
   );
 };

@@ -7,7 +7,7 @@ const WaveItem = ({ wave }) => {
   const isAuthor = wave.address === address;
 
   return (
-    <div className="w-full rounded-md bg-white border shadow-sm p-4 md:p-5">
+    <div className="break-inside-avoid mb-4 w-full rounded-md bg-white border shadow-sm p-4 md:p-5">
       <span className="flex items-center justify-between">
         <a
           href={`https://rinkeby.etherscan.io/address/${wave.address}`}
