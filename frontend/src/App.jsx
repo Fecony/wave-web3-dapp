@@ -13,6 +13,7 @@ import AttentionAlert from "./components/AttentionAlert.jsx";
 import Address from "./components/Address.jsx";
 import Loading from "./components/Loading.jsx";
 import WaveList from "./components/WaveList.jsx";
+import WaveCount from "./components/WaveCount.jsx";
 
 const App = () => {
   const { chain } = useNetwork();
@@ -40,6 +41,8 @@ const App = () => {
       <AttentionAlert />
 
       <Address text="Contract address" address={contractAddress} />
+
+      <WaveCount />
 
       <div className="relative">
         <DisconnectButton />
