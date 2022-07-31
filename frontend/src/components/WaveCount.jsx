@@ -1,6 +1,7 @@
 import { useContractReads, useAccount } from "wagmi";
 import { abi as WavePortalABI } from "../artifacts/contracts/WavePortal.sol/WavePortal.json";
 import Loading from "./Loading.jsx";
+import CountItem from "./CounItem.jsx";
 
 const WaveCount = () => {
   const { address } = useAccount();
@@ -33,31 +34,19 @@ const WaveCount = () => {
     return null;
   }
 
-  console.log("Retrieved total wave count...", totalWaves.toNumber());
-  console.log(
-    "Retrieved total wave count for address...",
-    addressTotalWaves.toNumber()
-  );
-
   return (
     <div className="flex flex-row space-x-2">
       {isLoading ? (
         <Loading />
       ) : (
         <>
-          <span className="inline-flex flex-grow justify-center items-center gap-1.5 py-1.5 px-3 rounded text-xs font-medium bg-blue-100 text-blue-800">
-            Total Waves:
-            <span className="inline-block items-center py-0.5 px-1.5 rounded-full text-xs text-indigo-800">
-              {totalWaves.toNumber()}
-            </span>
-          </span>
-
-          <span className="inline-flex flex-grow justify-center items-center gap-1.5 py-1.5 px-3 rounded text-xs font-medium bg-teal-100 text-teal-800">
-            Your Waves:
-            <span className="inline-block items-center py-0.5 px-1.5 rounded-full text-xs text-teal-800">
-              {addressTotalWaves.toNumber()}
-            </span>
-          </span>
+          <CountItem text={"Total Waves:"} count={totalWaves} />
+          <CountItem
+            text={"Your Waves:"}
+            count={addressTotalWaves}
+            textColor="text-teal-800"
+            bgColor="bg-teal-100"
+          />
         </>
       )}
     </div>
