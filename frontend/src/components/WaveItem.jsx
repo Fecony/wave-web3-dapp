@@ -5,6 +5,7 @@ const WaveItem = ({ wave }) => {
   const { address } = useAccount();
 
   const isAuthor = wave.address === address;
+  const isEmptyMessage = !wave.message;
 
   return (
     <div className="break-inside-avoid mb-4 w-full rounded-md bg-white border shadow-sm p-4 md:p-5">
@@ -25,7 +26,9 @@ const WaveItem = ({ wave }) => {
         )}
       </span>
 
-      <p className="mt-2 text-gray-800">{wave.message}</p>
+      <p className={`mt-2 text-gray-800 ${isEmptyMessage && "opacity-40"}`}>
+        {!isEmptyMessage ? wave.message : "Boo! I'm a ghost 👻"}
+      </p>
     </div>
   );
 };

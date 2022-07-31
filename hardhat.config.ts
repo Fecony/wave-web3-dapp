@@ -15,14 +15,14 @@ const config: HardhatUserConfig = {
     artifacts: "./frontend/src/artifacts",
   },
   networks: {
-    hardhat: {
-      mining: {
-        auto: false,
-        interval: 1000,
-      },
+    rinkeby: {
+      url: process.env.STAGING_ALCHEMY_KEY,
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    ropsten: {
-      url: process.env.STAGING_ALCHEMY_KEY || "",
+    mainnet: {
+      chainId: 1,
+      url: process.env.PROD_ALCHEMY_KEY,
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
