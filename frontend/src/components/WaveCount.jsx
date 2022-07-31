@@ -6,8 +6,21 @@ import CountItem from "./CounItem.jsx";
 const WaveCount = () => {
   const { address } = useAccount();
 
-  if (!address) {
-    return null;
+  const contracts = [
+    {
+      addressOrName: import.meta.env.VITE_CONTRACT_ADDRESS,
+      contractInterface: WavePortalABI,
+      functionName: "getTotalWaves",
+    },
+  ];
+
+  if (address) {
+    contracts.push({
+      addressOrName: import.meta.env.VITE_CONTRACT_ADDRESS,
+      contractInterface: WavePortalABI,
+      functionName: "getTotalWavesFor",
+      args: address,
+    });
   }
 
   const {
@@ -15,19 +28,7 @@ const WaveCount = () => {
     isError,
     isLoading,
   } = useContractReads({
-    contracts: [
-      {
-        addressOrName: import.meta.env.VITE_CONTRACT_ADDRESS,
-        contractInterface: WavePortalABI,
-        functionName: "getTotalWaves",
-      },
-      {
-        addressOrName: import.meta.env.VITE_CONTRACT_ADDRESS,
-        contractInterface: WavePortalABI,
-        functionName: "getTotalWavesFor",
-        args: address,
-      },
-    ],
+    contracts,
   });
 
   if (isError) {
@@ -41,12 +42,14 @@ const WaveCount = () => {
       ) : (
         <>
           <CountItem text={"Total Waves:"} count={totalWaves} />
-          <CountItem
-            text={"Your Waves:"}
-            count={addressTotalWaves}
-            textColor="text-teal-800"
-            bgColor="bg-teal-100"
-          />
+          {address && (
+            <CountItem
+              text={"Your Waves:"}
+              count={addressTotalWaves}
+              textColor="text-teal-800"
+              bgColor="bg-teal-100"
+            />
+          )}
         </>
       )}
     </div>
