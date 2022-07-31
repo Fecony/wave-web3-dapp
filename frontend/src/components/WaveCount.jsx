@@ -23,12 +23,15 @@ const WaveCount = () => {
     });
   }
 
-  const {
-    data: [totalWaves, addressTotalWaves],
-    isLoading,
-  } = useContractReads({
+  const { data, isLoading } = useContractReads({
     contracts,
   });
+
+  if (isLoading || !data) {
+    return null;
+  }
+
+  const [totalWaves, addressTotalWaves] = data;
 
   return (
     <div className="flex flex-row space-x-2">
