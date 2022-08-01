@@ -1,25 +1,50 @@
 import { Formik, Field, Form } from "formik";
 import toast from "react-hot-toast";
-import { useNetwork } from "wagmi";
+import { useNetwork, usePrepareContractWrite, useContractWrite } from "wagmi";
 import { rinkeby } from "wagmi/chains";
 import Loading from "./Loading.jsx";
+import { abi as WavePortalABI } from "../artifacts/contracts/WavePortal.sol/WavePortal.json";
 
 const SendWave = () => {
   const { chain } = useNetwork();
 
+  const { config } = usePrepareContractWrite({
+    addressOrName: import.meta.env.VITE_CONTRACT_ADDRESS,
+    contractInterface: WavePortalABI,
+    functionName: "wave",
+    overrides: {
+      gasLimit: 300000,
+    },
+  });
+
+  const { data, isLoading, isSuccess, writeAsync } = useContractWrite(config);
+
+  // console.log(data, isLoading, isSuccess);
   const isCorrectNetwork = chain?.network === rinkeby.network;
 
-  const handleWave = async (values, { resetForm }) => {
+  const handleWave = async ({ message }, { resetForm }) => {
+    // TODO: use promise toast
+    await writeAsync?.(message)
+      .then((s) => {
+        console.log(s);
+        toast.success("Wave sent!", {
+          icon: "🚀",
+        });
+        resetForm();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     // TODO: handle wave submit
     // eslint-disable-next-line promise/param-names
-    await new Promise((r) => setTimeout(r, 500)).then(() => {
-      toast.success("Wave sent!", {
-        icon: "🚀",
-      });
-      // eslint-disable-next-line no-undef
-      alert(JSON.stringify(values, null, 2));
-    });
-    resetForm();
+    // await new Promise((r) => setTimeout(r, 500)).then(() => {
+    //   toast.success("Wave sent!", {
+    //     icon: "🚀",
+    //   });
+    //   // eslint-disable-next-line no-undef
+    //   alert(JSON.stringify(message, null, 2));
+    // });
   };
 
   return (
@@ -48,8 +73,7 @@ const SendWave = () => {
             <Field
               id="message"
               name="message"
-              aria-disabled={isValidating || isSubmitting || !isCorrectNetwork}
-              disabled={isValidating || isSubmitting || !isCorrectNetwork}
+              disabled={isSubmitting}
               placeholder="Wave at me!"
               className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500"
             />
@@ -57,8 +81,7 @@ const SendWave = () => {
             <button
               type="submit"
               aria-label="Send message"
-              aria-disabled={isValidating || isSubmitting || !isCorrectNetwork}
-              disabled={isValidating || isSubmitting || !isCorrectNetwork}
+              disabled={isSubmitting}
               className="inline-flex flex-shrink-0 justify-center items-center h-[2.875rem] w-[2.875rem] rounded-r border border-transparent font-semibold bg-blue-100 hover:bg-blue-200 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             >
               {isValidating || isSubmitting ? (
