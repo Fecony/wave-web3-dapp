@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount, useNetwork, useContractEvent } from "wagmi";
 import { rinkeby } from "wagmi/chains";
 import Danger from "./components/Danger.jsx";
 import DisconnectButton from "./components/DisconnectButton.jsx";
@@ -14,9 +14,13 @@ import Address from "./components/Address.jsx";
 import Loading from "./components/Loading.jsx";
 import WaveList from "./components/WaveList.jsx";
 import WaveCount from "./components/WaveCount.jsx";
+import { abi as WavePortalABI } from "./artifacts/contracts/WavePortal.sol/WavePortal.json";
+import Confetti from "react-confetti";
 
 const App = () => {
   const { chain } = useNetwork();
+  const [isVisibleConfetti, setVisibleConfetti] = useState(false);
+
   const { address, isConnected, isDisconnected, status } = useAccount();
 
   const isCorrectNetwork = chain?.network === rinkeby.network;
@@ -25,7 +29,20 @@ const App = () => {
   const isMetaMaskConnectedToWrongNetwork =
     isConnected && isMetaMaskAvailable && !isCorrectNetwork;
 
-  const contractAddress = "0x5f201a69d75dab49352a265562859f0bedd0ce98";
+  const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
+
+  useContractEvent({
+    addressOrName: contractAddress,
+    contractInterface: WavePortalABI,
+    eventName: "WonPrize",
+    listener: (event) => {
+      if (event[0] === address) {
+        setVisibleConfetti(true);
+      }
+
+      console.log("user won!", event);
+    },
+  });
 
   useEffect(() => {
     if (address) {
@@ -38,6 +55,16 @@ const App = () => {
 
   return (
     <main id="content" role="main" className="space-y-5">
+      {isVisibleConfetti && (
+        <Confetti
+          numberOfPieces={200}
+          recycle={false}
+          onConfettiComplete={(confetti) => {
+            setVisibleConfetti(false);
+          }}
+        />
+      )}
+
       <AttentionAlert />
 
       <Address text="Contract address" address={contractAddress} />

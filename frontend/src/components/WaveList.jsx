@@ -12,6 +12,7 @@ const WaveList = () => {
     addressOrName: import.meta.env.VITE_CONTRACT_ADDRESS,
     contractInterface: WavePortalABI,
     functionName: "getAllWaves",
+    watch: true,
   });
 
   if (isLoading) {

@@ -23,7 +23,7 @@ const SendWave = () => {
       gasLimit: 300000,
     },
     onError: (_) => {
-      toast.error("Please wait 15 minutes before sending again", {
+      toast.error("Please wait 15 minutes before waving again", {
         icon: "💥",
       });
     },
@@ -51,11 +51,23 @@ const SendWave = () => {
   }, [isSuccess, isError]);
 
   const handleWave = async ({ message }, { resetForm }) => {
-    setToastId(toast.loading("Sending wave!"));
+    const loadingToastId = toast.loading("Sending wave!");
+    setToastId(loadingToastId);
 
-    await writeToGreeterTx.writeAsync?.({
-      recklesslySetUnpreparedArgs: message,
-    });
+    await writeToGreeterTx
+      .writeAsync?.({
+        recklesslySetUnpreparedArgs: message,
+      })
+      .catch((e) => {
+        console.error(e.message);
+
+        toast.error("Wave wasn't sent...", {
+          id: loadingToastId,
+          icon: "😢",
+        });
+      });
+
+    resetForm();
   };
 
   return (
