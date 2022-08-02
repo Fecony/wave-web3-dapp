@@ -23,7 +23,7 @@ const SendWave = () => {
       gasLimit: 300000,
     },
     onError: (_) => {
-      toast.error("Please wait 15 minutes before waving again", {
+      toast.error("Please wait 5 minutes before waving again", {
         icon: "💥",
       });
     },
