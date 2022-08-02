@@ -1,11 +1,18 @@
+import { useEffect, useState } from "react";
 import { Formik, Field, Form } from "formik";
 import toast from "react-hot-toast";
-import { useNetwork, usePrepareContractWrite, useContractWrite } from "wagmi";
+import {
+  useNetwork,
+  usePrepareContractWrite,
+  useContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import { rinkeby } from "wagmi/chains";
 import Loading from "./Loading.jsx";
 import { abi as WavePortalABI } from "../artifacts/contracts/WavePortal.sol/WavePortal.json";
 
 const SendWave = () => {
+  const [toastId, setToastId] = useState(null);
   const { chain } = useNetwork();
 
   const { config } = usePrepareContractWrite({
@@ -15,36 +22,40 @@ const SendWave = () => {
     overrides: {
       gasLimit: 300000,
     },
+    onError: (_) => {
+      toast.error("Please wait 15 minutes before sending again", {
+        icon: "💥",
+      });
+    },
   });
 
-  const { data, isLoading, isSuccess, writeAsync } = useContractWrite(config);
+  const writeToGreeterTx = useContractWrite(config);
+  const { isSuccess, isError } = useWaitForTransaction({
+    hash: writeToGreeterTx.data?.hash,
+  });
 
-  // console.log(data, isLoading, isSuccess);
   const isCorrectNetwork = chain?.network === rinkeby.network;
 
-  const handleWave = async ({ message }, { resetForm }) => {
-    // TODO: use promise toast
-    await writeAsync?.(message)
-      .then((s) => {
-        console.log(s);
-        toast.success("Wave sent!", {
-          icon: "🚀",
-        });
-        resetForm();
-      })
-      .catch((error) => {
-        console.log(error);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Wave sent!", {
+        id: toastId,
+        icon: "🚀",
       });
+    } else if (isError) {
+      toast.error("Wave wasn't sent...", {
+        id: toastId,
+        icon: "😢",
+      });
+    }
+  }, [isSuccess, isError]);
 
-    // TODO: handle wave submit
-    // eslint-disable-next-line promise/param-names
-    // await new Promise((r) => setTimeout(r, 500)).then(() => {
-    //   toast.success("Wave sent!", {
-    //     icon: "🚀",
-    //   });
-    //   // eslint-disable-next-line no-undef
-    //   alert(JSON.stringify(message, null, 2));
-    // });
+  const handleWave = async ({ message }, { resetForm }) => {
+    setToastId(toast.loading("Sending wave!"));
+
+    await writeToGreeterTx.writeAsync?.({
+      recklesslySetUnpreparedArgs: message,
+    });
   };
 
   return (
@@ -73,7 +84,7 @@ const SendWave = () => {
             <Field
               id="message"
               name="message"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isCorrectNetwork}
               placeholder="Wave at me!"
               className="py-3 px-4 block w-full border-gray-200 shadow-sm rounded-l-md text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500"
             />
@@ -81,7 +92,7 @@ const SendWave = () => {
             <button
               type="submit"
               aria-label="Send message"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isCorrectNetwork}
               className="inline-flex flex-shrink-0 justify-center items-center h-[2.875rem] w-[2.875rem] rounded-r border border-transparent font-semibold bg-blue-100 hover:bg-blue-200 focus:z-10 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             >
               {isValidating || isSubmitting ? (
