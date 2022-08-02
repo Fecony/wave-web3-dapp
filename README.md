@@ -1,3 +1,32 @@
+# buildspace Wave Portal 👋
+
+Simple Solidity app built with [buildspace](https://buildspace.so/p/build-solidity-web3-app/) (Remastered)
+
+##### Used
+
+- [Alchemy](https://www.alchemy.com/)
+- [Solidity](https://soliditylang.org/)
+  - [Hardhat](https://hardhat.org/)
+  - Rinkeby testnet
+- Frontend
+  - [React](https://reactjs.org/)
+  - [Vite](https://vitejs.dev/)
+  - [React Hot Toast](https://react-hot-toast.com/)
+  - [wagmi](https://wagmi.sh/)
+  - [truncate-eth-address](https://github.com/gpxl-dev/truncate-eth-address)
+  - [Tailwindcss](https://tailwindcss.com/)
+  - [Formik](https://formik.org/)
+  - [Preline](https://preline.co/)
+
+##### Changes from default app
+- Confetti 
+- Event listening
+- Wave Author badge
+- Wave count (total, for address)
+- Used wagmi hooks
+- Switch to Rinkeby test network
+- Toasts! 🍞
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
