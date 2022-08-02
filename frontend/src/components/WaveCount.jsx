@@ -25,6 +25,7 @@ const WaveCount = () => {
 
   const { data, isLoading } = useContractReads({
     contracts,
+    watch: true,
   });
 
   if (isLoading || !data) {
