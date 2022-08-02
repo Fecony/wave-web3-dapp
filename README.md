@@ -1,6 +1,11 @@
 # buildspace Wave Portal 👋
 
+<img width="1117" alt="Screenshot 2022-08-03 at 01 41 54" src="https://user-images.githubusercontent.com/36774784/182478528-97ed1a41-d11e-4e53-a59c-58f4b587dcd5.png">
+
 Simple Solidity app built with [buildspace](https://buildspace.so/p/build-solidity-web3-app/) (Remastered)
+
+[Base Solidity Frontend Repository](https://github.com/Fecony/web3-ui)
+[Base Solidity Contract Repository](https://github.com/Fecony/web3-solidity)
 
 ##### Used
 
