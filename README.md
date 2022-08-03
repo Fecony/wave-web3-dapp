@@ -36,6 +36,7 @@ Simple Solidity app built with [buildspace](https://buildspace.so/p/build-solidi
 - Should have used [Turporepo](https://turborepo.org/)
 - Use [Rainbowkit](https://www.rainbowkit.com/)
 - Clean up React components
+- Write Tests
 
 # Advanced Sample Hardhat Project
 
