@@ -32,6 +32,11 @@ Simple Solidity app built with [buildspace](https://buildspace.so/p/build-solidi
 - Switch to Rinkeby test network
 - Toasts! 🍞
 
+##### Fix
+- Should have used [Turporepo](https://turborepo.org/)
+- Use [Rainbowkit](https://www.rainbowkit.com/)
+- Clean up React components
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
